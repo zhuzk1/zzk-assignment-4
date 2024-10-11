@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSA Search Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .chart-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Latent Semantic Analysis (LSA) Search Engine</h1>
+        <div class="input-group">
+            <input type="text" id="query" placeholder="Enter your search query here..." />
+            <button onclick="performSearch()">Search</button>
+        </div>
+        <div class="results" id="results">
+            <!-- Search results will be displayed here -->
+        </div>
+        <div class="chart-container">
+            <canvas id="similarityChart"></canvas>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function performSearch() {
+            const query = document.getElementById('query').value;
+            // This function will handle the search logic (to be implemented)
+            // For now, just log the query to the console
+            console.log('Search query:', query);
+            // Clear previous results
+            document.getElementById('results').innerHTML = '';
+            // Call a backend API or function to get the search results and update the page
+            // Example placeholder for displaying results
+            const results = [
+                { docId: 'Document 1', similarity: 0.95 },
+                { docId: 'Document 2', similarity: 0.92 },
+                { docId: 'Document 3', similarity: 0.89 },
+                { docId: 'Document 4', similarity: 0.85 },
+                { docId: 'Document 5', similarity: 0.82 }
+            ];
+            displayResults(results);
+            displayChart(results);
+        }
+
+        function displayResults(results) {
+            const resultsContainer = document.getElementById('results');
+            results.forEach(result => {
+                const resultDiv = document.createElement('div');
+                resultDiv.classList.add('result-item');
+                resultDiv.innerHTML = `<strong>${result.docId}</strong>: Similarity Score = ${result.similarity}`;
+                resultsContainer.appendChild(resultDiv);
+            });
+        }
+
+        function displayChart(results) {
+            const ctx = document.getElementById('similarityChart').getContext('2d');
+            const labels = results.map(r => r.docId);
+            const data = results.map(r => r.similarity);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cosine Similarity',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
